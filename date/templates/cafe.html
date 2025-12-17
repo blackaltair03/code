@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Date Proposal</title>
+    
+    <style>
+        /* --- ESTILOS GENERALES Y RESETEO --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #b9c6da 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .contenedor {
+            max-width: 800px;
+            width: 100%;
+            background: rgb(159, 173, 255);
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+            animation: aparecer 1s ease-out;
+        }
+        
+        /* --- CABECERA --- */
+        .header {
+            background: linear-gradient(to right, #6a11cb 20%, #2575fc 80%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .cafe-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: flotar 3s ease-in-out infinite;
+        }
+        
+        .subtitulo {
+            color: #ffffff;
+            font-size: 18px;
+            margin-top: 10px;
+            font-weight: normal;
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        .contenido {
+            padding: 50px;
+            text-align: center;
+        }
+        
+        .mensaje-box {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-left: 5px solid #6a11cb;
+        }
+        
+        .mensaje-texto {
+            font-size: 22px;
+            line-height: 1.6;
+            color: #333;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        /* --- BOTONES Y RESPUESTAS (AJUSTE CRÍTICO AQUÍ) --- */
+        .boton-principal {
+            background: linear-gradient(to right, #6a11cb 20%, #2575fc 80%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .boton-principal:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(106, 17, 203, 0.2);
+        }
+        
+        /* Contenedor: Fundamental para la alineación inicial */
+        .botones-respuesta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            position: relative; /* Establece el contexto para cualquier posicionamiento absoluto futuro */
+        }
+        
+        .boton-respuesta {
+            padding: 15px 40px;
+            border-radius: 50px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        /* Estilo para el botón de "En otro momento" que va a moverse (solo transición) */
+        .boton-no-movible {
+            transition: transform 0.1s ease-out; 
+        }
+        
+        .boton-si {
+            background: #4CAF50;
+            color: white;
+            z-index: 10; 
+        }
+        
+        .boton-no {
+            background: #f8f9fa;
+            color: #666;
+            border: 2px solid #ddd;
+            z-index: 5;
+        }
+        
+        .boton-respuesta:hover {
+            transform: scale(1.05);
+        }
+        
+        /* --- OTROS CONTENEDORES Y ANIMACIONES --- */
+        .calendario {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .opcion-video {
+            background: #e3f2fd;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        @keyframes flotar {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @media (max-width: 600px) {
+            .contenido { padding: 30px; }
+            .header { padding: 30px 20px; }
+            .botones-respuesta { flex-direction: column; }
+            .boton-principal { padding: 15px 30px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <div class="header">
+            <div class="cafe-icon">☕</div>
+            <h1>A first date</h1>
+            <p class="subtitulo">Mejor en persona que por mensaje, ¿no crees?</p>
+        </div>
+        
+        <div class="contenido">
+            <p style="color: #666; margin-bottom: 30px;">
+                "A veces una pantalla no es suficiente para conocer a alguien..."
+            </p>
+            
+            <div class="mensaje-box">
+                <div class="mensaje-texto" id="mensaje">
+                    Pulsa el botón para comenzar...
+                </div>
+            </div>
+            
+            <button class="boton-principal" id="btnSiguiente" onclick="siguientePaso()">
+                💬 Continuar conversación
+            </button>
+            
+            <div class="botones-respuesta" id="respuestas" style="display: none;">
+                <button class="boton-respuesta boton-si" onclick="responder('si')">
+                    Sí, me encantaría ☕
+                </button>
+                
+                <button 
+                    class="boton-respuesta boton-no" 
+                    id="btnNo" 
+                    onclick="responder('no')">
+                    En otro momento
+                </button>
+            </div>
+            
+            <div class="calendario" id="calendario">
+                <h3>🎉 ¡Perfecto!</h3>
+                <p>Te envío un mensaje para coordinar el día y lugar exactos</p>
+                <p style="color: #666; margin-top: 15px;">
+                    Espero que el lugar te guste :)
+                </p>
+            </div>
+            
+            <div class="opcion-video" id="opcionVideo">
+                <h3>💻 ¡Buena idea!</h3>
+                <p>Te enviaré un link para una videollamada corta. 😉</p>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        let pasoActual = 0;
+
+        // --- Función para activar el movimiento del botón 'En otro momento' ---
+        function activarMovimiento() {
+            const btnNo = document.getElementById('btnNo');
+            const respuestas = document.getElementById('respuestas');
+            
+            btnNo.classList.add('boton-no-movible');
+
+            // Activamos la detección de movimiento del mouse sobre el botón
+            btnNo.onmousemove = (e) => {
+                const rect = btnNo.getBoundingClientRect();
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+
+                // Centro del botón
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                // Distancia del cursor al centro del botón
+                const distance = Math.sqrt(Math.pow(mouseX - centerX, 2) + Math.pow(mouseY - centerY, 2));
+
+                const activationRadius = 80; // Radio en píxeles para activar el movimiento
+                const maxOffset = 40; // Distancia máxima de desplazamiento
+
+                if (distance < activationRadius) {
+                    // Mover el botón ligeramente de forma aleatoria si el cursor está cerca
+                    const moveX = (Math.random() - 100) * maxOffset;
+                    const moveY = (Math.random() - 100) * maxOffset;
+                    
+                    btnNo.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                    btnNo.style.transition = 'transform 0.1s ease-out';
+                } else {
+                    // Regresar a su posición normal (0,0)
+                    btnNo.style.transform = `translate(0px, 0px)`;
+                }
+            };
+        }
+        // --------------------------------------------------------
+        
+        function siguientePaso() {
+            if (pasoActual === 0) {
+                document.getElementById('btnSiguiente').innerHTML = '💭 Siguiente';
+            }
+            
+            // Petición al backend
+            fetch('/siguiente_paso', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ paso: pasoActual })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const mensaje = document.getElementById('mensaje');
+                
+                if (data.final || pasoActual >= 4) {
+                    // Muestra opciones y activa el movimiento del botón 'no'
+                    document.getElementById('respuestas').style.display = 'flex';
+                    document.getElementById('btnSiguiente').style.display = 'none';
+                    activarMovimiento(); 
+                } else {
+                    // Mostrar el siguiente mensaje
+                    mensaje.style.animation = 'none';
+                    setTimeout(() => {
+                        mensaje.style.animation = 'fadeIn 0.5s forwards';
+                        mensaje.textContent = data.mensaje;
+                    }, 10);
+                    pasoActual++;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('mensaje').textContent = '¡Ups! Algo salió mal. Recarga la página 😊';
+            });
+        }
+        
+        function responder(opcion) {
+            // Desactiva el movimiento y lo resetea si se presiona 'no'
+            if (opcion === 'no') {
+                document.getElementById('btnNo').onmousemove = null;
+                document.getElementById('btnNo').style.transform = `translate(0px, 0px)`; 
+            }
+            
+            fetch('/responder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ respuesta: opcion })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const mensaje = document.getElementById('mensaje');
+                mensaje.textContent = data.mensaje;
+                document.getElementById('respuestas').style.display = 'none';
+                
+                if (data.mostrar_calendario) {
+                    document.getElementById('calendario').style.display = 'block';
+                } else if (data.mostrar_opciones) {
+                    document.getElementById('opcionVideo').style.display = 'block';
+                }
+                
+                if (data.final) {
+                    // Finaliza la conversación
+                    setTimeout(() => {
+                        document.getElementById('btnSiguiente').textContent = '💌 ¡Gracias por tu honestidad!';
+                        document.getElementById('btnSiguiente').style.display = 'block';
+                        document.getElementById('btnSiguiente').onclick = () => {
+                            location.reload();
+                        };
+                    }, 2000);
+                }
+            });
+        }
+        
+        // Iniciar con animación del primer mensaje al cargar
+        setTimeout(() => {
+            document.querySelector('.mensaje-texto').style.animation = 'fadeIn 0.5s forwards';
+        }, 500);
+        
+        console.log('Sitio cargado correctamente');
+    </script>
+</body>
+</html>
